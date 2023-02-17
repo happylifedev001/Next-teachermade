@@ -13,7 +13,7 @@ function App() {
   return (
     <React.Fragment>
       <Navbar bg="light" expand="lg">
-        <Container>
+        <Container fluid={true}>
           <Navbar.Brand href="#">
             <img src={logo} alt="Teacher Made" height="45" />
             Teacher Made
@@ -41,6 +41,8 @@ function App() {
         </Container>
       </Navbar>
       <Toolbar />
+      <div id="sheet" className="container-fluid border">
+      </div>
     </React.Fragment>
   );
 }

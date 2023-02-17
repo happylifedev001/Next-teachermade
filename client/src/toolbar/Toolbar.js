@@ -7,8 +7,35 @@ class Toolbar extends Component {
 		this.toolbar = new ToolbarDHX(this.el, {
 			css: "dhx_widget--bordered dhx_widget--bg_white",
 			navigationType: "pointer",
+      data: [   
+        {
+          "id": "insert",
+          "icon": "mdi mdi-plus-box",
+          "value": "Insert"
+        },
+        {
+          "id": "draw",
+          "icon": "mdi mdi-lead-pencil",
+          "value": "Draw"
+        },
+        {
+          "type": "separator"
+        },
+        {
+          "id": "highlighter",
+          "icon": "mdi mdi-marker",
+          "value": "Highlighter"
+        },
+        {
+          "id": "eraser",
+          "icon": "mdi mdi-eraser-variant",
+          "value": "Drawing Eraser"
+        }
+      ]
 		});
-		this.toolbar.data.load(`${process.env.PUBLIC_URL}/static/toolbar.json`);
+    this.toolbar.events.on("click", (id, e) => {
+      console.log(id);
+    });
 	}
 	componentWillUnmount() {
 		this.toolbar.destructor();
