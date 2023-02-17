@@ -1,43 +1,35 @@
 import logo from './logo.svg';
 import React from 'react';
 import './App.css';
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
 
 function App() {
   return (
-    <div className="mb-1" id="app-menu">
-      <nav className="mb-4 navbar navbar-expand-md navbar-dark bg-dark">
-        <div className="container">
-          <a href="https://www.teachermade.com" className="navbar-brand">
-            <img src={logo} alt="Teacher Made" height="45"/>
-          </a>
-          <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="navbar-collapse collapse" id="collapsibleNavbar">
-            <nav className="mr-auto navbar-nav">
-              <a href="/app" className="nav-link">My Activities</a>
-              <button type="button" className="nav-link btn btn-link">
-                <span>New Activity</span>
-              </button>
-            </nav>
-            <nav className="align-items-stretch navbar-nav">
-              <div className="dropdown">
-                <a href="/current" className="mr-3 nav-link dropdown-toggle" data-toggle="dropdown">
-                  <i className="fas fa-user mr-2"></i>
-                  User
-                </a>
-                <div className="dropdown-menu">
-                  <a className="dropdown-item" href="/logout">
-                    <i className="fas fa-sign-out-alt mr-2"></i>
-                    Logout
-                  </a>
-                </div>
-              </div>
-            </nav>
-          </div>
-        </div>
-      </nav>
-    </div>
+    <Navbar bg="light" expand="lg">
+      <Container>
+        <Navbar.Brand href="#">
+          <img src={logo} alt="Teacher Made" height="45" />
+          Teacher Made
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="me-auto">
+            <Nav.Link href="/home">Home</Nav.Link>
+          </Nav>
+          <Nav className="w-auto">
+            <NavDropdown title={<span><i className='fas fa-user me-2'></i> User</span>} id="basic-nav-dropdown">
+              <NavDropdown.Item href="/logout">
+                <i className="fas fa-sign-out-alt me-2"></i>
+                Logout
+              </NavDropdown.Item>
+            </NavDropdown>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
   );
 }
 
