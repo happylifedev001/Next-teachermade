@@ -24,6 +24,12 @@ function App() {
               <Nav.Link href="/home">Home</Nav.Link>
             </Nav>
             <Nav className="w-auto">
+              <Nav.Link href="/register">
+                <i className='fas fa-user-plus me-2'></i> Register
+              </Nav.Link>
+              <Nav.Link href="/login">
+                <i className='fas fa-sign-in-alt me-2'></i> Login
+              </Nav.Link>
               <NavDropdown title={<span><i className='fas fa-user me-2'></i> User</span>} id="basic-nav-dropdown">
                 <NavDropdown.Item href="/logout">
                   <i className="fas fa-sign-out-alt me-2"></i>
