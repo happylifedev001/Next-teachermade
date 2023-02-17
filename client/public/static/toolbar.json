@@ -1,0 +1,25 @@
+[   
+  {
+    "id": "insert",
+    "icon": "mdi mdi-plus-box",
+    "value": "Insert"
+  },
+  {
+    "id": "draw",
+    "icon": "mdi mdi-lead-pencil",
+    "value": "Draw"
+  },
+  {
+    "type": "separator"
+  },
+  {
+    "id": "highlighter",
+    "icon": "mdi mdi-marker",
+    "value": "Highlighter"
+  },
+  {
+    "id": "eraser",
+    "icon": "mdi mdi-eraser-variant",
+    "value": "Drawing Eraser"
+  }
+]

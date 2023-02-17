@@ -1,6 +1,8 @@
 import logo from './logo.svg';
 import React from 'react';
 import './App.css';
+import 'dhx-suite/codebase/suite.min.css';
+import '@mdi/font/css/materialdesignicons.min.css';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
