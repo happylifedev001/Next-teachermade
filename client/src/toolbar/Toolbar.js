@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import MyNavbar from './MyNavbar';
+import ToolNavbar from './ToolNavbar';
 import MyModal from './MyModal';
 
 function Toolbar() {
@@ -9,7 +9,7 @@ function Toolbar() {
   const openInsertToolset = () => setShowInsertToolset(true);
   return (
     <>      
-      <MyNavbar openInsertToolset={openInsertToolset}/>
+      <ToolNavbar openInsertToolset={openInsertToolset}/>
       <MyModal show={showInsertToolset} closeInsertToolset={closeInsertToolset}/>
     </>
   );

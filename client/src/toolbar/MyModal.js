@@ -7,7 +7,6 @@ import Modal from 'react-bootstrap/Modal';
 
 export default function MyModal(props) {
     return (
-
         <Modal show={props.show} onHide={props.closeInsertToolset} size="lg">
             <Modal.Header closeButton>
                 <Modal.Title>Insert Toolset</Modal.Title>
