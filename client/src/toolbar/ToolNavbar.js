@@ -27,19 +27,19 @@ function ToolNavbar({openInsertToolset, setItem}) {
                         </Button>
                     </Nav>
                     <Nav className="me-2">
-                        <Button variant="outline-success" size="sm" onClick={() => setSelectedItem('draw')}>
+                        <Button variant="outline-success" size="sm" active={selectedItem == 'draw' ? true : false} onClick={() => setSelectedItem('draw')}>
                             <i className="fas fa-pen me-1"></i>
                             Draw
                         </Button>
                     </Nav>
                     <Nav className="me-2">
-                        <Button variant="outline-success" size="sm" onClick={() => setSelectedItem('highlighter')}>
+                        <Button variant="outline-success" size="sm" active={selectedItem == 'highlighter' ? true : false} onClick={() => setSelectedItem('highlighter')}>
                             <i className="fas fa-marker me-1"></i>
                             Highlighter
                         </Button>
                     </Nav>
                     <Nav className="me-2">
-                        <Button variant="outline-success" size="sm" onClick={() => setSelectedItem('eraser')}>
+                        <Button variant="outline-success" size="sm" active={selectedItem == 'eraser' ? true : false} onClick={() => setSelectedItem('eraser')}>
                             <i className="fas fa-eraser me-1"></i>
                             Eraser
                         </Button>
