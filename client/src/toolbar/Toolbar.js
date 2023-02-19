@@ -2,10 +2,15 @@ import React, { useState } from 'react';
 
 import ToolNavbar from './ToolNavbar';
 import MyModal from './MyModal';
+import { connect } from 'react-redux';
+import { setItem } from '../actions/stageAction';
 
-function Toolbar() {
+function Toolbar({ setItem}) {
   const [showInsertToolset, setShowInsertToolset] = useState(false);
-  const closeInsertToolset = () => setShowInsertToolset(false);
+  const closeInsertToolset = () => {
+    setShowInsertToolset(false);
+    setItem(null);
+  }
   const openInsertToolset = () => setShowInsertToolset(true);
   return (
     <>      
@@ -15,4 +20,4 @@ function Toolbar() {
   );
 }
 
-export default Toolbar;
+export default connect(null, {setItem})(Toolbar);
