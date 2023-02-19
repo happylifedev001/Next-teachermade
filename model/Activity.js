@@ -1,9 +1,5 @@
 const mongoose = require('mongoose');
 // const Schema =  mongoose.Schema();
-const SlideSchema = new mongoose.Schema({
-    background: String,
-    elements: [ElementSchema]
-});
 
 const ElementSchema = new mongoose.Schema({
     type: String,
@@ -16,9 +12,14 @@ const ElementSchema = new mongoose.Schema({
     point: Number
 })
 
+const SlideSchema = new mongoose.Schema({
+    background: String,
+    elements: [ElementSchema]
+});
+
 const ActivitySchema = new mongoose.Schema({
   who: String,
-  when: Date,
+  when: String,
   slides: [SlideSchema]
 });
 

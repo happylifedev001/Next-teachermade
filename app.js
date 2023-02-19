@@ -5,7 +5,9 @@ const logger = require('morgan');
 const connectDB =  require('./config/db');
 
 const indexRouter = require('./routes/index');
+const authRouter =  require('./routes/auth');
 const usersRouter = require('./routes/users');
+const activityRouter = require('./routes/activity');
 
 const app = express();
 connectDB();
@@ -17,7 +19,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+app.use('/auth', authRouter);
 app.use('/users', usersRouter);
+app.use('/activity',activityRouter);
 
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {
