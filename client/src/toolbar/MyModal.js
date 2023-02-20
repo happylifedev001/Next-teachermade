@@ -1,13 +1,26 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Modal from 'react-bootstrap/Modal';
+import { connect } from 'react-redux';
 
-export default function MyModal(props) {
+import { setInsertItem, setItem } from '../actions/stageAction';
+
+function MyModal({setItem, setInsertItem, selectedItem}) {
+
+    const [showModal, setShowModal] = useState(false);
+
+    useEffect(() => {
+        if(selectedItem === 'insert') setShowModal(true);
+    }, [selectedItem])
+
     return (
-        <Modal show={props.show} onHide={props.closeInsertToolset} size="lg">
+        <Modal show={showModal} onHide={() => {
+            setShowModal(false);
+            setItem(null);
+        }} size="lg">
             <Modal.Header closeButton>
                 <Modal.Title>Insert Toolset</Modal.Title>
             </Modal.Header>
@@ -26,10 +39,13 @@ export default function MyModal(props) {
                     </Row>
                     <Row>
                         <Col md={3}>
-                            <Button variant='outline-success' size='sm'>Checkbox / Multiselect</Button>
+                            <Button onClick={() => {
+                                setInsertItem({type: 'checkbox'});
+                                setShowModal(false);
+                            }} variant='outline-success' size='sm'>Checkbox / Multiselect</Button>
                         </Col>
                         <Col md={3}>
-                            <Button variant='outline-success' size='sm'>Matching</Button>
+                            <Button onClick={() => setInsertItem({type: 'matching'})} variant='outline-success' size='sm'>Matching</Button>
                         </Col>
                         <Col md={3}>
                             <Button variant='outline-success' size='sm'>Algebra / Formula</Button>
@@ -57,3 +73,9 @@ export default function MyModal(props) {
         </Modal>
     )
 }
+
+const mapStateToProps = state => ({
+    selectedItem : state.stage.selectedItem
+})
+
+export default connect(mapStateToProps, {setInsertItem, setItem})(MyModal);

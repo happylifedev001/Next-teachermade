@@ -1,21 +1,31 @@
-import { SELECTEDITEM_CHANGED } from "../actions/actionType"
+import { SELECTEDITEM_CHANGED, SET_BACKGROUND, ISNERT_ITEM } from "../actions/actionType"
 
 const initialState = {
-    selectedItem: null
+    selectedItem: null,
+    backgroundImage: null,
+    insert: {}
 }
 
-function stageReducer(state = initialState, action)
-{
-    const {type, payload} = action;
-    
-    switch(type)
-    {
+function stageReducer(state = initialState, action) {
+    const { type, payload } = action;
+
+    switch (type) {
         case SELECTEDITEM_CHANGED:
             return {
                 ...state,
                 selectedItem: payload
             }
-        default :
+        case SET_BACKGROUND:
+            return {
+                ...state,
+                backgroundImage: payload
+            }
+        case ISNERT_ITEM:
+            return {
+                ...state,
+                insert: payload
+            }
+        default:
             return state;
     }
 }

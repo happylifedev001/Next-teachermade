@@ -1,2 +1,4 @@
 export const SELECTEDITEM_CHANGED = 'SELECTEDITEM_CHANGED';
 export const ERROR = 'ERROR';
+export const SET_BACKGROUND = 'SET_BACKGROUND';
+export const ISNERT_ITEM = 'INSERT_ITEM';
