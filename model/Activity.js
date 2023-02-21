@@ -14,6 +14,7 @@ const ElementSchema = new mongoose.Schema({
 
 const SlideSchema = new mongoose.Schema({
     background: String,
+    svg: String,
     elements: [ElementSchema]
 });
 

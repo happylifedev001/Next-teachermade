@@ -8,12 +8,10 @@ const auth = require('../middleware/auth');
 
 const Activity = require('../model/Activity');
 const User = require('../model/User');
-// const checkObjectId = require('../../middleware/checkObjectId');
+const checkObjectId = require('../middleware/checkObjectId');
 
-// @route    POST api/posts
-// @desc     Create a post
-// @access   Private
 
+// save activity
 router.post(
     '/',
     auth,
@@ -30,7 +28,6 @@ router.post(
 
         try {
             // const user = await User.findById(req.user.id).select('-password');
-            // const slides = await SlideSchema.findById()
             const newActivity = new Activity({
                 slides: req.body.slides,
                 who: req.body.name,
@@ -47,6 +44,55 @@ router.post(
     }
 );
 
+// read activity
+router.get('/:id', auth, checkObjectId('id'), async (req, res) => {
+    try {
+        const activity = await Activity.findById(req.params.id);
+
+        if (!activity) {
+            return res.status(404).json({
+                msg: 'Activity not found'
+            });
+        }
+
+        res.json(activity);
+    } catch (err) {
+        console.error(err.message);
+
+        res.status(500).send('Server Error');
+    }
+});
+
+//remove activity
+router.delete('/:id', [auth, checkObjectId('id')], async (req, res) => {
+    try {
+        const activity = await Activity.findById(req.params.id);
+
+        if (!activity) {
+            return res.status(404).json({
+                msg: 'Activity not found'
+            });
+        }
+
+        // Check user
+        // if (activity.who.toString() !== req.user.id) {
+        //     return res.status(401).json({
+        //         msg: 'User not authorized'
+        //     });
+        // }
+
+        await activity.remove();
+
+        res.json({
+            msg: 'Activity removed'
+        });
+    } catch (err) {
+        console.error(err.message);
+
+        res.status(500).send('Server Error');
+    }
+});
+
 // @route    GET api/posts
 // @desc     Get all posts
 // @access   Private
@@ -58,59 +104,6 @@ router.post(
 //         res.json(activities);
 //     } catch (err) {
 //         console.error(err.message);
-//         res.status(500).send('Server Error');
-//     }
-// });
-
-// @route    GET api/posts/:id
-// @desc     Get post by ID
-// @access   Private
-// router.get('/:id', auth, checkObjectId('id'), async (req, res) => {
-//     try {
-//         const activity = await Activity.findById(req.params.id);
-
-//         if (!activity) {
-//             return res.status(404).json({
-//                 msg: 'Activity not found'
-//             });
-//         }
-
-//         res.json(activity);
-//     } catch (err) {
-//         console.error(err.message);
-
-//         res.status(500).send('Server Error');
-//     }
-// });
-
-// @route    DELETE api/posts/:id
-// @desc     Delete a post
-// @access   Private
-// router.delete('/:id', [auth, checkObjectId('id')], async (req, res) => {
-//     try {
-//         const activity = await Activity.findById(req.params.id);
-
-//         if (!activity) {
-//             return res.status(404).json({
-//                 msg: 'Activity not found'
-//             });
-//         }
-
-//         // Check user
-//         if (activity.who.toString() !== req.user.id) {
-//             return res.status(401).json({
-//                 msg: 'User not authorized'
-//             });
-//         }
-
-//         await activity.remove();
-
-//         res.json({
-//             msg: 'Activity removed'
-//         });
-//     } catch (err) {
-//         console.error(err.message);
-
 //         res.status(500).send('Server Error');
 //     }
 // });
