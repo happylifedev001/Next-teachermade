@@ -1,13 +1,13 @@
 import React, { useState, useRef } from 'react'
-import { Stage, Layer, Line, Rect, Group } from 'react-konva'
-import { Html } from 'react-konva-utils'
+import { Stage, Layer, Line, Rect} from 'react-konva'
 import "../style/canvas.css"
 
 import { connect } from 'react-redux'
 import CanvasBackground from './CanvasBackground'
-import { setItem } from '../actions/stageAction'
+import { setItem, setInserts } from '../actions/stageAction'
+import InsertComponent from './InsertComponent'
 
-function MyStage({ selectedItem, backgroundImage, insertItem, setItem }) {
+function MyStage({ selectedItem, backgroundImage, insert, inserts, setItem, setInserts }) {
 
   //Drawing implement
   const isDrawing = useRef(false);
@@ -15,7 +15,7 @@ function MyStage({ selectedItem, backgroundImage, insertItem, setItem }) {
   const isInsert = useRef(false);
   const [lines, setLines] = useState([]);
   const [rects, setRects] = useState([]);
-  const [inserts, setInserts] = useState([]);
+  const [selectedId, setSelectedId] = useState(null);
 
   const handleMouseDown = (e) => {
     switch (selectedItem) {
@@ -39,8 +39,16 @@ function MyStage({ selectedItem, backgroundImage, insertItem, setItem }) {
         {
           isInsert.current = true;
           const pos = e.target.getStage().getPointerPosition();
-          const tool = insertItem;
-          setInserts([...inserts, { tool, startPos: { x: pos.x, y: pos.y }, endPos: { x: pos.x, y: pos.y } }]);
+          setInserts([...inserts, { type: insert.type, x: pos.x, y: pos.y, width: 0, height: 0, number: 1 }]);
+          break;
+        }
+      default:
+        {
+          const clickedOnEmpty = e.target === e.target.getStage();
+          const clikedOnBackground = e.target.getId() === "canvasBackground";
+          if (clickedOnEmpty || clikedOnBackground) {
+            setSelectedId(null);
+          }
           break;
         }
     }
@@ -81,11 +89,14 @@ function MyStage({ selectedItem, backgroundImage, insertItem, setItem }) {
           if (!isInsert.current) return;
           const pos = e.target.getStage().getPointerPosition();
           let lastInsert = inserts[inserts.length - 1];
-          lastInsert.endPos = { x: pos.x, y: pos.y };
+          lastInsert.width = pos.x-lastInsert.x;
+          lastInsert.height = pos.y - lastInsert.y;
           inserts.splice(inserts.length - 1, 1, lastInsert);
           setInserts(inserts.concat());
           break;
         }
+      default:
+        break;
     }
   };
 
@@ -106,10 +117,30 @@ function MyStage({ selectedItem, backgroundImage, insertItem, setItem }) {
         {
           isInsert.current = false;
           setItem(null);
+          break;
         }
+      default:
+        break;
     }
   };
   //Drawing implement
+
+  const handleTransformChange = (newAttrs, i) => {
+    let insertsToUpdate = inserts;
+    let singleInsertToUpdate = insertsToUpdate[i];
+    // update old attributes
+    singleInsertToUpdate = newAttrs;
+    insertsToUpdate[i] = singleInsertToUpdate;
+    setInserts(insertsToUpdate);
+  };
+
+  const passInsertWithId = (insert, id) => {
+    const insertWithId = {
+      ...insert,
+      id: id,
+    };
+    return insertWithId;
+  };
 
   return (
     <div className='workContainer'>
@@ -119,7 +150,9 @@ function MyStage({ selectedItem, backgroundImage, insertItem, setItem }) {
         className="canvasStage"
         onMousemove={handleMouseMove}
         onMouseup={handleMouseUp}
-        onMouseDown={handleMouseDown}
+        onMouseDown={(e) => {
+          handleMouseDown(e);
+        }}
       >
         <Layer>
           {typeof backgroundImage === "string" && (
@@ -156,23 +189,22 @@ function MyStage({ selectedItem, backgroundImage, insertItem, setItem }) {
           }
           {
             inserts.map((insert, i) => (
-              <Rect
+              <InsertComponent
+                id={i}
                 key={i}
-                x={insert.startPos.x}
-                y={insert.startPos.y}
-                width={insert.endPos.x - insert.startPos.x}
-                height={insert.endPos.y - insert.startPos.y}
-                stroke="black"
+                item={insert}
+                shapeProps={passInsertWithId(insert, i)}
+                width={insert.width}
+                height={insert.height}
+                onSelect={() => setSelectedId(i)}
+                onChange={(newAttrs) => {
+                  handleTransformChange(newAttrs, i);
+                }}
+                isSelected={i === selectedId}
               />
             ))
           }
 
-          <Group draggable x={20} y={50}>
-            <Html divProps={{ style: { pointerEvents: "none" } }}>
-              <input type="checkbox" style={{width:"50px", height:"50px"}} />
-            </Html>
-            <Rect width={100} height={100} shadowBlur={10} />
-          </Group>
 
         </Layer>
       </Stage>
@@ -183,7 +215,8 @@ function MyStage({ selectedItem, backgroundImage, insertItem, setItem }) {
 const mapStateToProps = (state) => ({
   selectedItem: state.stage.selectedItem,
   backgroundImage: state.stage.backgroundImage,
-  insertItem: state.stage.insert.type
+  insert: state.stage.insert,
+  inserts: state.stage.inserts
 })
 
-export default connect(mapStateToProps, {setItem})(MyStage);
+export default connect(mapStateToProps, { setItem, setInserts })(MyStage);

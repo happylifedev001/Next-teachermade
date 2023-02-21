@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
@@ -8,12 +8,12 @@ import { connect } from 'react-redux';
 
 import { setInsertItem, setItem } from '../actions/stageAction';
 
-function MyModal({setItem, setInsertItem, selectedItem}) {
+function MyModal({ setItem, setInsertItem, selectedItem }) {
 
     const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
-        if(selectedItem === 'insert') setShowModal(true);
+        if (selectedItem === 'insert') setShowModal(true);
     }, [selectedItem])
 
     return (
@@ -40,12 +40,16 @@ function MyModal({setItem, setInsertItem, selectedItem}) {
                     <Row>
                         <Col md={3}>
                             <Button onClick={() => {
-                                setInsertItem({type: 'checkbox'});
+                                setInsertItem({ type: 'checkbox', number: 1, direction: 'horizontal' });
                                 setShowModal(false);
                             }} variant='outline-success' size='sm'>Checkbox / Multiselect</Button>
                         </Col>
                         <Col md={3}>
-                            <Button onClick={() => setInsertItem({type: 'matching'})} variant='outline-success' size='sm'>Matching</Button>
+                            <Button
+                                onClick={() => setInsertItem({ type: 'matching' })}
+                                variant='outline-success'
+                                size='sm'>Matching
+                            </Button>
                         </Col>
                         <Col md={3}>
                             <Button variant='outline-success' size='sm'>Algebra / Formula</Button>
@@ -68,6 +72,19 @@ function MyModal({setItem, setInsertItem, selectedItem}) {
                             <Button variant='outline-success' size='sm'>Color Block</Button>
                         </Col>
                     </Row>
+                    <Row>
+                        <Col md={3}>
+                            <Button
+                                variant='outline-success'
+                                size='sm'
+                                onClick={() => {
+                                    setInsertItem({ type: 'radio', number: 1, direction: 'horizontal' });
+                                    setShowModal(false);
+                                }}>
+                                Multichoice
+                            </Button>
+                        </Col>
+                    </Row>
                 </Container>
             </Modal.Body>
         </Modal>
@@ -75,7 +92,7 @@ function MyModal({setItem, setInsertItem, selectedItem}) {
 }
 
 const mapStateToProps = state => ({
-    selectedItem : state.stage.selectedItem
+    selectedItem: state.stage.selectedItem
 })
 
-export default connect(mapStateToProps, {setInsertItem, setItem})(MyModal);
+export default connect(mapStateToProps, { setInsertItem, setItem })(MyModal);
