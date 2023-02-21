@@ -3,7 +3,8 @@ import {
     ERROR,
     SET_BACKGROUND,
     INSERT_ITEM,
-    CHECK_MODAL
+    CHECK_MODAL,
+    SET_INSERTS
 } from "./actionType";
 
 export const setItem = (item) => async (dispatch) => {
@@ -49,6 +50,19 @@ export const setCheckModal = (item) => async (dispatch) => {
     try {
         dispatch({
             type: CHECK_MODAL,
+            payload: item
+        })
+    } catch {
+        dispatch({
+            type: ERROR
+        })
+    }
+}
+
+export const setInserts = (item) => async (dispatch) => {
+    try {
+        dispatch({
+            type: SET_INSERTS,
             payload: item
         })
     } catch {

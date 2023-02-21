@@ -80,11 +80,18 @@ const InsertComponent = ({ item, shapeProps, id, width, height, isSelected, onSe
   const Content = () => {
     const content = [];
     const length = Math.min(width, height);
+    
     for (let i = 0; i < insert.number; i++) {
+      if(insert.direction === 'vertical') 
        content[i] = (
         <div>
-          <input type={insert.type} key={i} style={{ width: length *0.8 / insert.number, height: length*0.8 / insert.number, position: 'relative' }} />  
+          <input name={`${id}`} type={insert.type} key={i} style={{ width: length *0.8 / insert.number, height: length*0.8 / insert.number, position: 'relative' }} />  
         </div>
+       )
+       else
+       content[i] = (
+          <input name={`${id}`} className='mr-2' type={insert.type} key={i} style={{ width: length *0.8 / insert.number, height: length*0.8 / insert.number, position: 'relative' }} />  
+        
        )
     }
     return content;

@@ -191,6 +191,7 @@ function MyStage({ selectedItem, backgroundImage, insertItem, setItem }) {
           {
             inserts.map((insert, i) => (
               <InsertComponent
+                id={`insert${i}`}
                 key={i}
                 item={insert}
                 shapeProps={passInsertWithId(insert, `insert${i}`)}

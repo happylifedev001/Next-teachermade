@@ -3,3 +3,4 @@ export const ERROR = 'ERROR';
 export const SET_BACKGROUND = 'SET_BACKGROUND';
 export const INSERT_ITEM = 'INSERT_ITEM';
 export const CHECK_MODAL = 'CHECK_MODAL';
+export const SET_INSERTS = 'SET_INSERTS';

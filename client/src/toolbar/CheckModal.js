@@ -18,10 +18,10 @@ function CheckModal({showModal, setCheckModal, setInsertItem, insert}) {
             <Modal.Body>
                 <Container>
                     <Row>
-                        <Col md={6}>
+                        <Col md={4}>
                             <h6>Number of {insert.type}</h6>
                         </Col>
-                        <Col md={3}>
+                        <Col md={1}>
                             <select id='numOfBox'>
                                 <option value={1}>1</option>
                                 <option value={2}>2</option>
@@ -33,10 +33,16 @@ function CheckModal({showModal, setCheckModal, setInsertItem, insert}) {
                                 <option value={8}>8</option>
                             </select>
                         </Col>
+                        <Col md={4}>
+                            <select id="direction">
+                                <option value={'vertical'}>Vertical</option>
+                                <option value={'horizontal'}>Horizontal</option>
+                            </select>
+                        </Col>
                         <Col md={3}>
                             <Button variant='outline-primary' onClick={() => {
                                 setCheckModal(false);
-                                setInsertItem({...insert, number: Number($('#numOfBox').val())})
+                                setInsertItem({...insert, number: Number($('#numOfBox').val()), direction: $('#direction').val()})
                             }}>
                                 <i className='fas fa-check' />
                                 OK
