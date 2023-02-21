@@ -40,7 +40,7 @@ function MyModal({setItem, setInsertItem, selectedItem}) {
                     <Row>
                         <Col md={3}>
                             <Button onClick={() => {
-                                setInsertItem({type: 'checkbox'});
+                                setInsertItem({type: 'checkbox', number: 1});
                                 setShowModal(false);
                             }} variant='outline-success' size='sm'>Checkbox / Multiselect</Button>
                         </Col>

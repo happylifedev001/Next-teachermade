@@ -1,9 +1,10 @@
-import { SELECTEDITEM_CHANGED, SET_BACKGROUND, ISNERT_ITEM } from "../actions/actionType"
+import { SELECTEDITEM_CHANGED, SET_BACKGROUND, INSERT_ITEM, CHECK_MODAL } from "../actions/actionType"
 
 const initialState = {
     selectedItem: null,
     backgroundImage: null,
-    insert: {}
+    insert: {},
+    checkModal: false
 }
 
 function stageReducer(state = initialState, action) {
@@ -20,10 +21,17 @@ function stageReducer(state = initialState, action) {
                 ...state,
                 backgroundImage: payload
             }
-        case ISNERT_ITEM:
+        case INSERT_ITEM:
             return {
                 ...state,
                 insert: payload
+            }
+        case CHECK_MODAL:
+            {
+                return {
+                    ...state,
+                    checkModal: payload
+                }
             }
         default:
             return state;
