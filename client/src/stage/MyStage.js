@@ -4,10 +4,10 @@ import "../style/canvas.css"
 
 import { connect } from 'react-redux'
 import CanvasBackground from './CanvasBackground'
-import { setItem } from '../actions/stageAction'
+import { setItem, setInserts } from '../actions/stageAction'
 import InsertComponent from './InsertComponent'
 
-function MyStage({ selectedItem, backgroundImage, insertItem, setItem }) {
+function MyStage({ selectedItem, backgroundImage, insert, inserts, setItem, setInserts }) {
 
   //Drawing implement
   const isDrawing = useRef(false);
@@ -15,7 +15,6 @@ function MyStage({ selectedItem, backgroundImage, insertItem, setItem }) {
   const isInsert = useRef(false);
   const [lines, setLines] = useState([]);
   const [rects, setRects] = useState([]);
-  const [inserts, setInserts] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
 
   const handleMouseDown = (e) => {
@@ -40,8 +39,7 @@ function MyStage({ selectedItem, backgroundImage, insertItem, setItem }) {
         {
           isInsert.current = true;
           const pos = e.target.getStage().getPointerPosition();
-          const tool = insertItem;
-          setInserts([...inserts, { tool, startPos: { x: pos.x, y: pos.y }, endPos: { x: pos.x, y: pos.y } }]);
+          setInserts([...inserts, { type: insert.type, x: pos.x, y: pos.y, width: 0, height: 0, number: 1 }]);
           break;
         }
       default:
@@ -91,7 +89,8 @@ function MyStage({ selectedItem, backgroundImage, insertItem, setItem }) {
           if (!isInsert.current) return;
           const pos = e.target.getStage().getPointerPosition();
           let lastInsert = inserts[inserts.length - 1];
-          lastInsert.endPos = { x: pos.x, y: pos.y };
+          lastInsert.width = pos.x-lastInsert.x;
+          lastInsert.height = pos.y - lastInsert.y;
           inserts.splice(inserts.length - 1, 1, lastInsert);
           setInserts(inserts.concat());
           break;
@@ -191,12 +190,12 @@ function MyStage({ selectedItem, backgroundImage, insertItem, setItem }) {
           {
             inserts.map((insert, i) => (
               <InsertComponent
-                id={`insert${i}`}
+                id={i}
                 key={i}
                 item={insert}
-                shapeProps={passInsertWithId(insert, `insert${i}`)}
-                width={insert.endPos.x - insert.startPos.x}
-                height={insert.endPos.y - insert.startPos.y}
+                shapeProps={passInsertWithId(insert, i)}
+                width={insert.width}
+                height={insert.height}
                 onSelect={() => setSelectedId(i)}
                 onChange={(newAttrs) => {
                   handleTransformChange(newAttrs, i);
@@ -216,7 +215,8 @@ function MyStage({ selectedItem, backgroundImage, insertItem, setItem }) {
 const mapStateToProps = (state) => ({
   selectedItem: state.stage.selectedItem,
   backgroundImage: state.stage.backgroundImage,
-  insertItem: state.stage.insert.type
+  insert: state.stage.insert,
+  inserts: state.stage.inserts
 })
 
-export default connect(mapStateToProps, { setItem })(MyStage);
+export default connect(mapStateToProps, { setItem, setInserts })(MyStage);
