@@ -74,13 +74,6 @@ router.delete('/:id', [auth, checkObjectId('id')], async (req, res) => {
             });
         }
 
-        // Check user
-        // if (activity.who.toString() !== req.user.id) {
-        //     return res.status(401).json({
-        //         msg: 'User not authorized'
-        //     });
-        // }
-
         await activity.remove();
 
         res.json({
@@ -92,6 +85,39 @@ router.delete('/:id', [auth, checkObjectId('id')], async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
+
+// save modify
+router.post(
+    '/modify',
+    auth,
+    check("name", "A person is required"),
+    check("time", "Time is required"),
+    check('slides', 'Activity is required').notEmpty(),
+    async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({
+                errors: errors.array()
+            });
+        }
+
+        try {
+            // const user = await User.findById(req.user.id).select('-password');
+            const newActivity = new Activity({
+                slides: req.body.slides,
+                who: req.body.name,
+                when: req.body.time
+            });
+
+            const activity = await newActivity.save();
+
+            res.json(activity);
+        } catch (err) {
+            console.error(err.message);
+            res.status(500).send('Server Error');
+        }
+    }
+);
 
 // @route    GET api/posts
 // @desc     Get all posts
